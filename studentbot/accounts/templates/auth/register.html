@@ -11,29 +11,20 @@
             Create Your Account
         </h2>
 
-        <!-- Email Input -->
         <input type="email" name="email" placeholder="Enter your email" required>
-
-        <!-- Username Input -->
         <input type="text" name="username" placeholder="Enter username" required>
 
-        <!-- Password Input -->
         <input type="password" name="password1" placeholder="Enter password" required>
-
-        <!-- Confirm Password Input -->
         <input type="password" name="password2" placeholder="Confirm password" required>
 
-        <!-- Remember me (optional) -->
         <label style="display: flex; align-items: center; margin-bottom: 20px; font-weight: 500; font-size: 14px;">
             <input type="checkbox" style="margin-right: 8px;"> Remember me
         </label>
 
-        <!-- Submit Button -->
         <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
             Register
         </button>
 
-        <!-- Login Link -->
         <p style="text-align: center; margin-top: 15px; color: #94a3b8; font-size: 14px;">
             Already have an account? <a href="{% url 'login' %}" class="btn-outline" style="padding:4px 8px;">Login</a>
         </p>
