@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="hero" style="flex-direction: column; justify-content: center;">
+
+    <form method="POST" action="{% url 'login' %}" style="max-width: 400px; width: 100%;">
+        {% csrf_token %}
+
+        <h2 style="font-size: 32px; font-weight: 700; margin-bottom: 20px; text-align: center;">
+            Welcome Back
+        </h2>
+
+        <!-- Username Input -->
+        <input type="text" name="username" placeholder="Enter username" required>
+
+        <!-- Password Input -->
+        <input type="password" name="password" placeholder="Enter password" required>
+
+        <!-- Remember me checkbox -->
+        <label style="display: flex; align-items: center; margin-bottom: 20px; font-weight: 500; font-size: 14px;">
+            <input type="checkbox" style="margin-right: 8px;"> Remember me
+        </label>
+
+        <!-- Login Button -->
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+            Login
+        </button>
+
+        <!-- Register Link -->
+        <p style="text-align: center; margin-top: 15px; color: #94a3b8; font-size: 14px;">
+            Don't have an account? <a href="{% url 'register' %}" class="btn-outline" style="padding:4px 8px;">Sign Up</a>
+        </p>
+
+    </form>
+
+</div>
+
+{% endblock %}

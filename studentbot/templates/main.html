@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container" style="display:flex; height:80vh; gap:20px; padding:20px;">
+
+    <!-- Sidebar: Chat History -->
+    <div class="sidebar" style="width:300px; background:#1e293b; border-radius:10px; padding:15px; overflow-y:auto;">
+        <h3 style="color:#f8fafc; font-weight:700; margin-bottom:10px;">Chat History</h3>
+        <div class="chat-history">
+            <!-- Empty for now -->
+            <p style="color:#94a3b8; font-style:italic;">No conversations yet</p>
+        </div>
+    </div>
+
+    <!-- Main Chat Area -->
+    <div class="chat-main" style="flex:1; display:flex; flex-direction:column; background:#0f172a; border-radius:10px; padding:15px;">
+        <h2 style="color:#f8fafc; font-weight:700; margin-bottom:15px;">
+            Welcome, {{ username }}!
+        </h2>
+
+        <div id="chat-box" style="flex:1; overflow-y:auto; margin-bottom:15px; padding-right:5px;">
+            <!-- Chat messages will appear here -->
+        </div>
+
+        <form id="chat-form" style="display:flex; gap:10px;">
+            <input id="chat-input" type="text" placeholder="Type a message..." style="flex:1; padding:10px; border-radius:5px; border:none; outline:none; background:#1e293b; color:#f8fafc;">
+            <button type="submit" class="btn btn-primary" style="padding:10px 20px;">Send</button>
+        </form>
+    </div>
+
+</div>
+
+<!-- Optional JS for basic frontend chat functionality -->
+<script>
+    const form = document.getElementById('chat-form');
+    const input = document.getElementById('chat-input');
+    const chatBox = document.getElementById('chat-box');
+
+    form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const msg = input.value.trim();
+        if(msg){
+            const userMsg = document.createElement('p');
+            userMsg.textContent = 'You: ' + msg;
+            userMsg.style.color = '#38bdf8';
+            chatBox.appendChild(userMsg);
+
+            // Clear input
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // For now, echo message (later connect to AI backend)
+            const botMsg = document.createElement('p');
+            botMsg.textContent = 'AI: ' + msg;
+            botMsg.style.color = '#a78bfa';
+            chatBox.appendChild(botMsg);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    });
+</script>
+
+{% endblock %}

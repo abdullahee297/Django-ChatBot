@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero">
+    <div>
+        <h1>Welcome to Student AI</h1>
+        <p>Your intelligent study assistant for coding and learning.</p>
+        <a href="{% url 'register' %}" class="btn btn-primary">Get Started</a>
+        <a href="{% url 'login' %}" class="btn btn-outline">Login</a>
+    </div>
+</div>
+{% endblock %}

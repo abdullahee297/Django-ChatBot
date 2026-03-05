@@ -1,0 +1,123 @@
+/* GLOBAL SETTINGS */
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #0f172a;
+    color: white;
+}
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: #020617;
+    border-bottom: 1px solid #1e293b;
+}
+.logo {
+    font-size: 22px;
+    font-weight: 700;
+}
+.nav-links a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+}
+.nav-links a:hover {
+    color: #6366f1;
+}
+
+/* CONTAINER LAYOUT */
+.container {
+    display: flex;
+    height: calc(100vh - 60px); /* full height minus navbar */
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 250px;
+    background: #020617;
+    border-right: 1px solid #1e293b;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.sidebar-title {
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+.empty-chat {
+    color: #64748b;
+    text-align: center;
+    margin-top: 100px;
+}
+
+/* HERO SECTION */
+.hero {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.hero h1 {
+    font-size: 48px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #818cf8, #c084fc);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+}
+
+.hero p {
+    color: #94a3b8;
+    font-size: 18px;
+    margin-top: 15px;
+}
+
+/* BUTTONS */
+.btn {
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    margin: 10px;
+    display: inline-block;
+    font-weight: 500;
+    transition: 0.2s;
+}
+.btn-primary {
+    background: #6366f1;
+    color: white;
+}
+.btn-primary:hover {
+    background: #4f46e5;
+}
+.btn-outline {
+    border: 1px solid #334155;
+    color: white;
+}
+.btn-outline:hover {
+    background: #1e293b;
+}
+
+/* FORM INPUTS */
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: #0f172a;
+    color: white;
+    margin-bottom: 15px;
+}
+input::placeholder {
+    color: #64748b;
+}
