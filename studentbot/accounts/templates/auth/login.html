@@ -3,7 +3,13 @@
 {% block content %}
 
 <div class="hero" style="flex-direction: column; justify-content: center;">
-
+    {% if messages %}
+        {% for message in messages %}
+            <div class="notification {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
     <form method="POST" action="{% url 'login' %}" style="max-width: 400px; width: 100%;">
         {% csrf_token %}
 

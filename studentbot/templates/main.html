@@ -16,7 +16,7 @@
     <!-- Main Chat Area -->
     <div class="chat-main" style="flex:1; display:flex; flex-direction:column; background:#0f172a; border-radius:10px; padding:15px;">
         <h2 style="color:#f8fafc; font-weight:700; margin-bottom:15px;">
-            Welcome, {{ username }}!
+            Welcome, {{ request.user.username }}!!
         </h2>
 
         <div id="chat-box" style="flex:1; overflow-y:auto; margin-bottom:15px; padding-right:5px;">
@@ -31,32 +31,42 @@
 
 </div>
 
-<!-- Optional JS for basic frontend chat functionality -->
 <script>
     const form = document.getElementById('chat-form');
     const input = document.getElementById('chat-input');
     const chatBox = document.getElementById('chat-box');
-
-    form.addEventListener('submit', function(e){
+    
+    form.addEventListener('submit', async function(e){
+    
         e.preventDefault();
         const msg = input.value.trim();
-        if(msg){
-            const userMsg = document.createElement('p');
-            userMsg.textContent = 'You: ' + msg;
-            userMsg.style.color = '#38bdf8';
-            chatBox.appendChild(userMsg);
-
-            // Clear input
-            input.value = '';
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            // For now, echo message (later connect to AI backend)
-            const botMsg = document.createElement('p');
-            botMsg.textContent = 'AI: ' + msg;
-            botMsg.style.color = '#a78bfa';
-            chatBox.appendChild(botMsg);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
+    
+        if(!msg) return;
+    
+        const userMsg = document.createElement('p');
+        userMsg.textContent = "You: " + msg;
+        userMsg.style.color = "#38bdf8";
+        chatBox.appendChild(userMsg);
+    
+        input.value = "";
+    
+        const response = await fetch("/chat/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({message: msg})
+        });
+    
+        const data = await response.json();
+    
+        const botMsg = document.createElement('p');
+        botMsg.textContent = "AI: " + data.reply;
+        botMsg.style.color = "#a78bfa";
+    
+        chatBox.appendChild(botMsg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    
     });
 </script>
 
