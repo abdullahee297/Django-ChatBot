@@ -10,31 +10,61 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-
-<!-- NAVBAR -->
-<div class="navbar">
-    <div class="logo">StudentAI</div>
-    <div class="nav-links">
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'register' %}" class="btn btn-primary">Sign Up</a>
+    
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <div class="logo">StudentAI</div>
+        <div class="nav-links">
+            {% if request.user.is_authenticated %}
+    
+                <div style="display:flex; align-items:center; gap:10px;">
+    
+                    <img 
+                        src="https://ui-avatars.com/api/?name={{ request.user.username }}" 
+                        style="width:40px; height:40px; border-radius:50%;"
+                    >
+    
+                    <span style="color:#f8fafc; font-weight:600;">
+                        {{ request.user.username }}
+                    </span>
+    
+                    <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Logout</button>
+                    </form>
+                </div>
+    
+            {% else %}
+    
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}" class="btn btn-primary">Sign Up</a>
+    
+            {% endif %}
+        </div>
+    
     </div>
-</div>
-
-<div class="container">
-
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-        <div class="sidebar-title">Chat History</div>
-        <div class="empty-chat">No conversations yet</div>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div class="main-content" style="flex:1;">
-        {% block content %}
-        {% endblock %}
-    </div>
-
-</div>
+        <div class="container">
+        
+        
+        
+            <!-- MAIN CONTENT -->
+            <div class="main-content" style="flex:1;">
+                {% block content %}
+                {% endblock %}
+            </div>
+        
+        </div>
 
 </body>
+<script>
+    setTimeout(() => {
+        document.querySelectorAll('.notification').forEach(msg => {
+            msg.style.transition = "all 0.5s ease";
+            msg.style.opacity = "0";
+            msg.style.transform = "translateY(-10px)";
+            setTimeout(() => msg.remove(), 500);
+        });
+    }, 1500);
+</script>
+
 </html>

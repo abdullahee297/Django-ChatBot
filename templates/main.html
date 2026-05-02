@@ -3,20 +3,27 @@
 {% block content %}
 
 <div class="container" style="display:flex; height:80vh; gap:20px; padding:20px;">
-
+    {% if messages %}
+        {% for message in messages %}
+            <div class="notification {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    
     <!-- Sidebar: Chat History -->
     <div class="sidebar" style="width:300px; background:#1e293b; border-radius:10px; padding:15px; overflow-y:auto;">
         <h3 style="color:#f8fafc; font-weight:700; margin-bottom:10px;">Chat History</h3>
         <div class="chat-history">
-            <!-- Empty for now -->
+
             <p style="color:#94a3b8; font-style:italic;">No conversations yet</p>
         </div>
     </div>
 
     <!-- Main Chat Area -->
     <div class="chat-main" style="flex:1; display:flex; flex-direction:column; background:#0f172a; border-radius:10px; padding:15px;">
-        <h2 style="color:#f8fafc; font-weight:700; margin-bottom:15px;">
-            Welcome, {{ request.user.username }}!!
+        <h2 style="color:#f8fafc; text-green-300 font-weight:700; margin-bottom:15px;">
+            Welcome, {{ request.user.username }}!
         </h2>
 
         <div id="chat-box" style="flex:1; overflow-y:auto; margin-bottom:15px; padding-right:5px;">
@@ -32,42 +39,63 @@
 </div>
 
 <script>
-    const form = document.getElementById('chat-form');
-    const input = document.getElementById('chat-input');
-    const chatBox = document.getElementById('chat-box');
-    
-    form.addEventListener('submit', async function(e){
-    
-        e.preventDefault();
-        const msg = input.value.trim();
-    
-        if(!msg) return;
-    
-        const userMsg = document.createElement('p');
-        userMsg.textContent = "You: " + msg;
-        userMsg.style.color = "#38bdf8";
-        chatBox.appendChild(userMsg);
-    
-        input.value = "";
-    
-        const response = await fetch("/chat/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({message: msg})
-        });
-    
-        const data = await response.json();
-    
-        const botMsg = document.createElement('p');
-        botMsg.textContent = "AI: " + data.reply;
-        botMsg.style.color = "#a78bfa";
-    
-        chatBox.appendChild(botMsg);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    
-    });
+const form = document.getElementById('chat-form');
+const input = document.getElementById('chat-input');
+const chatBox = document.getElementById('chat-box');
+
+form.addEventListener('submit', async function(e){
+    e.preventDefault();
+
+    const msg = input.value.trim();
+    if(!msg) return;
+
+    // show user message
+    const userMsg = document.createElement('p');
+    userMsg.textContent = "You: " + msg;
+    userMsg.style.color = "#ffffff";
+    chatBox.appendChild(userMsg);
+
+    input.value = "";
+
+    const botMsg = document.createElement('div');
+    botMsg.style.background = "#1e293b";
+    botMsg.style.padding = "10px";
+    botMsg.style.borderRadius = "8px";
+    botMsg.style.marginBottom = "10px";
+    botMsg.style.color = "#ffffff";
+    botMsg.textContent = "AI: ...";
+    botMsg.style.color = "#2bff00";
+    chatBox.appendChild(botMsg);
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    const response = await fetch(`/chat/?prompt=${encodeURIComponent(msg)}`);
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+
+    let aiText = "";
+
+while(true){
+    const {value, done} = await reader.read();
+    if(done) break;
+
+    aiText += decoder.decode(value);
+
+    botMsg.innerHTML = formatAIResponse(aiText);
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+});
+function formatAIResponse(text) {
+    return text
+        .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")   // bold
+        .replace(/### (.*?)/g, "<h3>$1</h3>")     // headings
+        .replace(/## (.*?)/g, "<h2>$1</h2>")
+        .replace(/# (.*?)/g, "<h1>$1</h1>")
+        .replace(/\n/g, "<br>")                  // line breaks
+        .replace(/- (.*?)/g, "• $1");            // bullets
+}
 </script>
 
 {% endblock %}
