@@ -15,6 +15,17 @@ body {
     background: #020617;
     border-bottom: 1px solid #1e293b;
 }
+
+.notification {
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    min-width: 250px;
+}
+
 .logo {
     font-size: 22px;
     font-weight: 700;

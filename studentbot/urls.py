@@ -25,5 +25,6 @@ urlpatterns = [
     path("base", views.base, name='base'),
     path("", views.main, name='main'),
     path("accounts/", include("accounts.urls")),
-    path("chat/", views.chat_api, name="chat_api"),
+    path("chat/", views.chatbot_stream, name="chatbot"),
+    # path("stream/", views.chatbot_stream, name="chat_stream"),
 ]
