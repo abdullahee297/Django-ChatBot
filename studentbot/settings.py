@@ -87,21 +87,22 @@ WSGI_APPLICATION = "studentbot.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": ":memory:",
-    }
-}
-
 # DATABASES = {
 #     "default": {
-#         "ENGINE": "django_mongodb_backend",
-#         "HOST": "mongodb://localhost:27017",
-#         "NAME": "chatbot",
-#     },
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": ":memory:",
+#     }
 # }
 
+import dj_database_url
+
+DATABASES = {
+    'default': dj_database_url.parse(
+        os.getenv("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=True
+    )
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

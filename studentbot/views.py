@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-client = Groq(api_key="gsk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+client = Groq(api_key="GROK_API")
 
 # print("KEY:", os.getenv("GROQ_API_KEY"))
 
