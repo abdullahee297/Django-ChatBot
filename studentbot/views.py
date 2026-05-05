@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from groq import Groq
 from dotenv import load_dotenv
+from accounts.models import Chat, Message
 
 load_dotenv()
 
@@ -23,8 +24,11 @@ def base(request):
 
 @login_required
 def main(request):
+    chats = Chat.objects.filter(user=request.user).order_by("-created_at")
+    
     return render(request, "main.html", {
-        "username": request.user.username
+        "username": request.user.username,
+        "chats": chats
     })
 
 
@@ -52,6 +56,14 @@ def chatbot_stream(request):
     if not prompt:
         return StreamingHttpResponse("No prompt provided", content_type="text/plain")
 
+    chat = Chat.objects.create(user=request.user)
+
+    Message.objects.create(
+        chat=chat,
+        sender="user",
+        content=prompt
+    )
+
     def generate():
         try:
             full_response = ""
@@ -59,6 +71,12 @@ def chatbot_stream(request):
             for chunk in groq_stream(prompt):
                 full_response += chunk
                 yield chunk
+
+            Message.objects.create(
+                chat=chat,
+                sender="ai",
+                content=full_response
+            )
 
         except Exception as e:
             yield f"\nError: {str(e)}"
