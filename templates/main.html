@@ -87,14 +87,85 @@ while(true){
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 });
+
 function formatAIResponse(text) {
-    return text
-        .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")   // bold
-        .replace(/### (.*?)/g, "<h3>$1</h3>")     // headings
+
+    // Escape HTML first
+    text = text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
+    // Convert code blocks ```language ... ```
+    text = text.replace(/```(\w+)?\n([\s\S]*?)```/g, function(match, lang, code) {
+        return `
+        <div class="code-container" style="
+            position:relative;
+            margin:10px 0;
+            background:#0d1117;
+            border-radius:8px;
+            overflow:hidden;
+            border:1px solid #30363d;
+        ">
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                background:#161b22;
+                padding:8px 12px;
+                font-size:14px;
+                color:#8b949e;
+                border-bottom:1px solid #30363d;
+            ">
+                <span>${lang || "code"}</span>
+
+                <button onclick="copyCode(this)"
+                    style="
+                        background:#238636;
+                        border:none;
+                        color:white;
+                        padding:5px 10px;
+                        border-radius:5px;
+                        cursor:pointer;
+                    ">
+                    Copy
+                </button>
+            </div>
+
+            <pre style="
+                margin:0;
+                padding:15px;
+                overflow-x:auto;
+                color:#f8f8f2;
+                font-size:14px;
+            "><code>${code}</code></pre>
+        </div>
+        `;
+    });
+
+    // Markdown formatting
+    text = text
+        .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
+        .replace(/### (.*?)/g, "<h3>$1</h3>")
         .replace(/## (.*?)/g, "<h2>$1</h2>")
         .replace(/# (.*?)/g, "<h1>$1</h1>")
-        .replace(/\n/g, "<br>")                  // line breaks
-        .replace(/- (.*?)/g, "• $1");            // bullets
+        .replace(/\n/g, "<br>")
+        .replace(/- (.*?)/g, "• $1");
+
+    return text;
+}
+
+// Copy button function
+function copyCode(button) {
+    const code = button.parentElement.nextElementSibling.innerText;
+
+    navigator.clipboard.writeText(code);
+
+    button.innerText = "Copied!";
+
+    setTimeout(() => {
+        button.innerText = "Copy";
+    }, 2000);
 }
 </script>
 
