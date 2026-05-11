@@ -92,11 +92,10 @@ function formatAIResponse(text) {
                 .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>") // bold 
                 .replace(/### (.*?)/g, "<h3>$1</h3>") // headings 
                 .replace(/## (.*?)/g, "<h2>$1</h2>") 
-                .replace(/# (.*?)/g, "<h1>$1</h1>") .replace(/\n/g, "<br>") // line breaks 
+                .replace(/# (.*?)/g, "<h1>$1</h1>") 
+                .replace(/\n/g, "<br>") // line breaks 
                 .replace(/- (.*?)/g, "• $1"); // bullets 
 }
-    
-
 </script>
 
 {% endblock %}
